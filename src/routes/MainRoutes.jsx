@@ -2,6 +2,8 @@ import { lazy } from 'react';
 
 import AdminLayout from 'layouts/AdminLayout';
 import GuestLayout from 'layouts/GuestLayout';
+import listInvoices from '../components/invoice/listInvoices';
+import ListInvoices from '../components/invoice/listInvoices';
 
 const DashboardSales = lazy(() => import('../views/dashboard/DashSales/index'));
 
@@ -52,6 +54,10 @@ const MainRoutes = {
         {
           path: '/sample-page',
           element: <Sample />
+        },
+        {
+          path: '/invoices',
+          element: <ListInvoices/>
         },
         {
           path: '*',

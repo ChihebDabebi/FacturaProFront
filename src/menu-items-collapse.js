@@ -98,17 +98,17 @@ const menuItems = {
       icon: 'icon-support',
       children: [
         {
-          id: 'menu-level',
-          title: 'Menu Levels',
+          id: 'invoices',
+          title: 'Invoices',
           type: 'collapse',
           icon: 'material-icons-two-tone',
-          iconname: 'list_alt',
+          iconname: 'request_quote',
           children: [
             {
-              id: 'menu-level-1.1',
-              title: 'Level 1.1',
+              id: 'list-invoices',
+              title: 'List Invoices',
               type: 'item',
-              url: '#'
+              url: '/invoices',
             },
             {
               id: 'menu-level-1.2',
@@ -152,16 +152,8 @@ const menuItems = {
           classes: 'nav-item disabled',
           icon: 'material-icons-two-tone',
           iconname: 'power_off'
-        },
-        {
-          id: 'sample-page',
-          title: 'Sample Page',
-          type: 'item',
-          url: '/sample-page',
-          classes: 'nav-item',
-          icon: 'material-icons-two-tone',
-          iconname: 'storefront'
         }
+       
       ]
     }
   ]

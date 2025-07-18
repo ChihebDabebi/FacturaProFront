@@ -4,6 +4,7 @@ import AdminLayout from 'layouts/AdminLayout';
 import GuestLayout from 'layouts/GuestLayout';
 import listInvoices from '../components/invoice/listInvoices';
 import ListInvoices from '../components/invoice/listInvoices';
+import InvoiceDetails from '../components/invoice/invoiceDetails';
 
 const DashboardSales = lazy(() => import('../views/dashboard/DashSales/index'));
 
@@ -57,7 +58,12 @@ const MainRoutes = {
         },
         {
           path: '/invoices',
-          element: <ListInvoices/>
+          element: <ListInvoices />
+        },
+        {
+
+          path: '/invoices/:id',
+          element: <InvoiceDetails />
         },
         {
           path: '*',

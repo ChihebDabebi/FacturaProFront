@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 const statusColor = {
     payée: 'success',
     envoyée: 'primary',
@@ -9,6 +11,7 @@ const statusColor = {
 };
 
 const ListInvoices = () => {
+    const navigate = useNavigate();
     const [invoices, setInvoices] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
@@ -29,7 +32,10 @@ const ListInvoices = () => {
             <h2 className="mt-4 mb-4 fw-bold">📄 Liste des factures</h2>
             <div className="row g-4">
                 {invoices.map((invoice) => (
-                    <div key={invoice._id} className="col-md-6">
+                    <div key={invoice._id}
+                        className="col-md-6"
+                        onClick={() => navigate(`/invoices/${invoice._id}`)}
+                    >
                         <div className="card shadow-sm border-0">
                             <div className="card-body">
                                 <div className="d-flex justify-content-between align-items-center mb-2">

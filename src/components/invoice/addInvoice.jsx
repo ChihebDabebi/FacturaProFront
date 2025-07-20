@@ -31,7 +31,6 @@ const AddInvoice = () => {
     setTotalHT(totalHT);
     setTva(tva);
     setTotalTTC(totalTTC);
-    //setInvoice(prev => ({ ...prev, totalHT, tva, totalTTC }));
   }, [invoice.produits]);
 
   const handleProduitChange = (index, field, value) => {

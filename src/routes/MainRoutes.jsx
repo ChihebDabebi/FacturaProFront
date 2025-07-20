@@ -6,6 +6,7 @@ import listInvoices from '../components/invoice/listInvoices';
 import ListInvoices from '../components/invoice/listInvoices';
 import InvoiceDetails from '../components/invoice/invoiceDetails';
 import AddInvoice from '../components/invoice/addInvoice';
+import UpdateInvoice from '../components/invoice/updateInvoice';
 
 const DashboardSales = lazy(() => import('../views/dashboard/DashSales/index'));
 
@@ -64,6 +65,10 @@ const MainRoutes = {
         {
           path: 'invoices/add',
           element: <AddInvoice />,
+        },
+        {
+          path: 'invoice/edit/:id',
+          element: <UpdateInvoice />,
         },
         {
 

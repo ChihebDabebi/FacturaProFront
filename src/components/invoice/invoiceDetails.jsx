@@ -42,7 +42,7 @@ const InvoiceDetails = () => {
     const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette facture ?");
     if (confirmed) {
       try {
-        await axios.delete(`http://localhost:3000/invoice/${id}`);
+        await axios.delete(`http://localhost:3001/invoice/${id}`);
         alert("Facture supprimée avec succès.");
         navigate("/invoices");
       } catch (err) {

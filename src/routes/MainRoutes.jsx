@@ -5,6 +5,7 @@ import GuestLayout from 'layouts/GuestLayout';
 import listInvoices from '../components/invoice/listInvoices';
 import ListInvoices from '../components/invoice/listInvoices';
 import InvoiceDetails from '../components/invoice/invoiceDetails';
+import AddInvoice from '../components/invoice/addInvoice';
 
 const DashboardSales = lazy(() => import('../views/dashboard/DashSales/index'));
 
@@ -59,6 +60,10 @@ const MainRoutes = {
         {
           path: '/invoices',
           element: <ListInvoices />
+        },
+        {
+          path: 'invoices/add',
+          element: <AddInvoice />,
         },
         {
 

@@ -1,4 +1,3 @@
-// src/pages/InvoiceDetails.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -17,7 +16,6 @@ const InvoiceDetails = () => {
   const [loading, setLoading] = useState(true);
   const [rest, setRest] = useState(0);
 
-  // Format dinars with French formatting
   const formatter = new Intl.NumberFormat('fr-TN', {
     style: 'currency',
     currency: 'TND',
@@ -26,9 +24,8 @@ const InvoiceDetails = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/invoice/${id}`);
+        const res = await axios.get(`http://localhost:3001/invoice/${id}`);
         setInvoice(res.data);
-
         const totalPaid = res.data.paiements.reduce((sum, p) => sum + p.montant, 0);
         setRest(res.data.totalTTC - totalPaid);
       } catch (err) {
@@ -41,6 +38,20 @@ const InvoiceDetails = () => {
     fetchInvoice();
   }, [id]);
 
+  const handleDelete = async () => {
+    const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette facture ?");
+    if (confirmed) {
+      try {
+        await axios.delete(`http://localhost:3000/invoice/${id}`);
+        alert("Facture supprimée avec succès.");
+        navigate("/invoices");
+      } catch (err) {
+        console.error("Erreur lors de la suppression :", err);
+        alert("Échec de la suppression de la facture.");
+      }
+    }
+  };
+
   if (loading) return <div className="text-center mt-5">Chargement...</div>;
   if (!invoice) return <div className="text-center text-danger mt-5">Facture introuvable</div>;
 
@@ -52,27 +63,43 @@ const InvoiceDetails = () => {
 
       <div className="card shadow border-0">
         <div className="card-header d-flex justify-content-between align-items-center">
-          <h4>
-            <i className="material-icons-two-tone text-primary me-2">request_quote</i>
-            Facture #{invoice.numero}
-          </h4>
-          <span className={`badge bg-${statusColors[invoice.statut] || 'secondary'}`}>
-            {invoice.statut}
-          </span>
+          <div>
+            <h4>
+              <i className="material-icons-two-tone text-primary me-2">request_quote</i>
+              Facture #{invoice.numero}
+            </h4>
+            <span className={`badge bg-${statusColors[invoice.statut] || 'secondary'}`}>
+              {invoice.statut}
+            </span>
+          </div>
+          <div>
+            <button
+              className="btn btn-outline-primary me-2"
+              onClick={() => navigate(`/invoice/edit/${id}`)}
+            >
+              ✏️ Modifier
+            </button>
+            <button className="btn btn-outline-danger" onClick={handleDelete}>
+              🗑️ Supprimer
+            </button>
+          </div>
         </div>
 
         <div className="card-body">
+          {/* Client Info */}
           <h5 className="text-muted mb-3">👤 Informations sur le client</h5>
           <p><strong>Nom:</strong> {invoice.clientId?.nom || 'N/A'}</p>
           <p><strong>Email:</strong> {invoice.clientId?.email || 'N/A'}</p>
           <p><strong>Entreprise:</strong> {invoice.clientId?.entreprise || 'N/A'}</p>
 
           <hr />
+          {/* Invoice Dates */}
           <h5 className="text-muted mb-3">🧾 Détails de la facture</h5>
           <p><strong>Date d’émission:</strong> {new Date(invoice.dateEmission).toLocaleDateString()}</p>
           <p><strong>Date d’échéance:</strong> {new Date(invoice.dateEcheance).toLocaleDateString()}</p>
 
           <hr />
+          {/* Product Table */}
           <h5 className="text-muted mb-3">📦 Produits</h5>
           <div className="table-responsive">
             <table className="table table-bordered align-middle">
@@ -103,6 +130,7 @@ const InvoiceDetails = () => {
             </table>
           </div>
 
+          {/* Totals */}
           <div className="mt-4 text-end">
             <p><strong>Total HT :</strong> {formatter.format(invoice.totalHT)}</p>
             <p><strong>TVA :</strong> {formatter.format(invoice.tva)}</p>
@@ -110,6 +138,7 @@ const InvoiceDetails = () => {
           </div>
 
           <hr />
+          {/* Payments */}
           <h5 className="text-muted mb-3">💳 Paiements</h5>
           {invoice.paiements && invoice.paiements.length > 0 ? (
             <ul className="list-group mb-3">
@@ -133,6 +162,7 @@ const InvoiceDetails = () => {
           )}
 
           <hr />
+          {/* Remaining */}
           <h5 className="text-muted mb-3">💰 Reste à payer</h5>
           <div className={`alert ${rest > 0 ? 'alert-warning' : 'alert-success'}`}>
             {rest > 0 ? (

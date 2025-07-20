@@ -15,7 +15,7 @@ const ListInvoices = () => {
     const [invoices, setInvoices] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        axios.get('http://localhost:3000/invoice/')
+        axios.get('http://localhost:3001/invoice/')
             .then((response) => {
                 setInvoices(response.data);
                 setLoading(false);

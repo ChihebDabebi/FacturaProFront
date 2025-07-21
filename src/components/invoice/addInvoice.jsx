@@ -14,12 +14,12 @@ const AddInvoice = () => {
   });
   const [totalHT, setTotalHT] = useState(0);
   const [tva, setTva] = useState(0);
-    const [totalTTC, setTotalTTC] = useState(0);
+  const [totalTTC, setTotalTTC] = useState(0);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:3001/client/')
+    axios.get('http://localhost:3001/user/')
       .then(res => setClients(res.data))
       .catch(err => console.error("Erreur chargement clients:", err));
   }, []);
@@ -66,7 +66,7 @@ const AddInvoice = () => {
   return (
     <div className="container mt-5">
       <h2 className="mb-4 fw-bold">➕ Nouvelle Facture</h2>
-      <form onSubmit={handleSubmit}> 
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label>Client</label>
           <select
@@ -109,60 +109,62 @@ const AddInvoice = () => {
 
         <h5 className="mt-4 mb-2">📦 Produits</h5>
         {invoice.produits.map((prod, index) => (
-          <div key={index} className="row g-2 mb-2 align-items-center">
-            <div className="col-3">
+          <div key={index} className="row g-2 mb-3 align-items-end border rounded p-3">
+            <div className="col-md-3">
+              <label className="form-label">Description</label>
               <input
                 type="text"
                 className="form-control"
-                placeholder="Description"
                 value={prod.description}
                 required
                 onChange={e => handleProduitChange(index, 'description', e.target.value)}
               />
             </div>
-            <div className="col">
+            <div className="col-md-2">
+              <label className="form-label">Quantité</label>
               <input
                 type="number"
                 className="form-control"
-                placeholder="Quantité"
                 min={1}
                 value={prod.quantite}
                 onChange={e => handleProduitChange(index, 'quantite', e.target.value)}
               />
             </div>
-            <div className="col">
+            <div className="col-md-3">
+              <label className="form-label">Prix unitaire (TND)</label>
               <input
                 type="number"
                 className="form-control"
-                placeholder="Prix unitaire"
                 min={0}
                 value={prod.prixUnitaire}
                 onChange={e => handleProduitChange(index, 'prixUnitaire', e.target.value)}
               />
             </div>
-            <div className="col">
+            <div className="col-md-2">
+              <label className="form-label">TVA (%)</label>
               <input
                 type="number"
                 className="form-control"
-                placeholder="TVA (%)"
                 min={0}
                 value={prod.tva}
                 onChange={e => handleProduitChange(index, 'tva', e.target.value)}
               />
             </div>
-            <div className="col-auto">
+            <div className="col-md-2 text-end">
               {invoice.produits.length > 1 && (
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-danger"
+                  className="btn btn-sm btn-outline-danger mt-4"
                   onClick={() => removeProduit(index)}
                 >
-                  ❌
+                  ❌ Supprimer
                 </button>
               )}
             </div>
           </div>
         ))}
+
+
         <div className="mb-3">
           <button type="button" className="btn btn-outline-primary" onClick={addProduit}>
             ➕ Ajouter un produit

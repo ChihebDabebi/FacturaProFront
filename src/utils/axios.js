@@ -24,7 +24,7 @@ instance.interceptors.response.use(
       } catch (err) {
         console.log("Refresh token failed", err);
         localStorage.removeItem('token');
-        window.location.href = '/DashboardKit/login'; 
+        window.location.href = '/FacturaPro/login'; 
       }
     }
 

@@ -1,6 +1,5 @@
 // react-bootstrap
 import { ListGroup, Dropdown } from 'react-bootstrap';
-
 // third party
 import FeatherIcon from 'feather-icons-react';
 import { Link } from 'react-router-dom';
@@ -8,6 +7,11 @@ import { Link } from 'react-router-dom';
 // -----------------------|| NAV LEFT ||-----------------------//
 
 export default function NavLeft() {
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/login'; 
+    
+  };
   return (
     <ListGroup as="ul" bsPrefix=" " className="list-unstyled">
       <Dropdown as="li" className="pc-h-item">
@@ -40,7 +44,7 @@ export default function NavLeft() {
                 <i className="fas fa-circle" />
                 <span>Lock Screen</span>
               </Link>
-              <Link className="dropdown-item" to="#">
+              <Link className="dropdown-item" onClick={handleLogout}>
                 <i className="fas fa-circle" />
                 <span>Logout</span>
               </Link>

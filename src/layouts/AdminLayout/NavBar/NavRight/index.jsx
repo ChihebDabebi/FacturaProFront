@@ -12,6 +12,11 @@ import avatar2 from 'assets/images/user/avatar-2.jpg';
 // -----------------------|| NAV RIGHT ||-----------------------//
 
 export default function NavRight() {
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/login'; 
+    
+  };
   return (
     <ListGroup as="ul" bsPrefix=" " className="list-unstyled">
       <ListGroup.Item as="li" bsPrefix=" " className="pc-h-item">
@@ -50,7 +55,7 @@ export default function NavRight() {
             <Link to="/auth/signin-2" className="dropdown-item">
               <i className="feather icon-lock" /> Lock Screen
             </Link>
-            <Link to="#" className="dropdown-item">
+            <Link to="#" className="dropdown-item" onClick={handleLogout}>
               <i className="material-icons-two-tone">chrome_reader_mode</i> Logout
             </Link>
           </Dropdown.Menu>

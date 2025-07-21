@@ -3,26 +3,32 @@ import { Card, Row, Col, Button, Form, InputGroup } from 'react-bootstrap';
 import FeatherIcon from 'feather-icons-react';
 import logoDark from 'assets/images/logo-dark.svg';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/axios';
+import { useAuth } from '../../context/AuthContext';
 
 export default function SignIn1() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { user,login } = useAuth();
 
-  const handleLogin = async () => {
+    const handleLogin = async () => {
     try {
-      const res = await api.post('/auth/login', { email, password }, { withCredentials: true });
-
-      localStorage.setItem("token", res.data.accessToken);
+      await login(email, password);
       navigate('/');
+      
     } catch (err) {
       console.error(err);
-      alert("Login failed");
+      alert('Login failed');
     }
   };
+  useEffect(() => {
+  if (user) {
+    console.log('User after login:', user);
+  }
+}, [user]);
 
   return (
     <div className="auth-wrapper">

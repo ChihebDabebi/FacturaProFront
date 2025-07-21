@@ -24,11 +24,7 @@ export default function SignIn1() {
       alert('Login failed');
     }
   };
-  useEffect(() => {
-  if (user) {
-    console.log('User after login:', user);
-  }
-}, [user]);
+ 
 
   return (
     <div className="auth-wrapper">

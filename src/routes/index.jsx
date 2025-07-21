@@ -4,6 +4,7 @@ import ProtectedRoute from '../routes/ProtectedRoute';
 import GuestRoute from '../routes/GuestRoute';
 import AdminLayout from 'layouts/AdminLayout';
 import GuestLayout from 'layouts/GuestLayout';
+import CreateClient from '../components/user/createClient';
 
 // Lazy-loaded components
 const DashboardSales = lazy(() => import('../views/dashboard/DashSales/index'));
@@ -93,6 +94,14 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<div>Loading...</div>}>
                 <ListInvoices />
+              </Suspense>
+            )
+          },
+          {
+            path: 'user/add',
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                < CreateClient/>
               </Suspense>
             )
           },

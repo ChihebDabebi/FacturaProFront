@@ -8,14 +8,16 @@ import FeatherIcon from 'feather-icons-react';
 
 // assets
 import avatar2 from 'assets/images/user/avatar-2.jpg';
+import {useAuth} from '../../../../context/AuthContext';
 
 // -----------------------|| NAV RIGHT ||-----------------------//
 
 export default function NavRight() {
+   const { logout } = useAuth();
+
   const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = '/login'; 
-    
+    logout();
+
   };
   return (
     <ListGroup as="ul" bsPrefix=" " className="list-unstyled">

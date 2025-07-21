@@ -3,14 +3,15 @@ import { ListGroup, Dropdown } from 'react-bootstrap';
 // third party
 import FeatherIcon from 'feather-icons-react';
 import { Link } from 'react-router-dom';
-
+import {useAuth} from '../../../../context/AuthContext';
 // -----------------------|| NAV LEFT ||-----------------------//
 
 export default function NavLeft() {
+  const { logout } = useAuth();
+
   const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = '/login'; 
-    
+    logout();
+
   };
   return (
     <ListGroup as="ul" bsPrefix=" " className="list-unstyled">

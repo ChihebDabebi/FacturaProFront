@@ -13,9 +13,16 @@ const statusColor = {
 const ListInvoices = () => {
     const navigate = useNavigate();
     const [invoices, setInvoices] = useState([]);
+    const [filteredInvoices, setFilteredInvoices] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [filters, setFilters] = useState({
+        client: '',
+        dateEcheance: '',
+        statut: '',
+        totalTTC : ''
+    });
     useEffect(() => {
-        axios.get('http://localhost:3001/invoice/')
+        axios.get('http://localhost:3001/invoice/', { params: filters })
             .then((response) => {
                 setInvoices(response.data);
                 setLoading(false);
@@ -24,12 +31,53 @@ const ListInvoices = () => {
                 console.error('Erreur lors de la récupération des factures :', error);
                 setLoading(false);
             });
-    }, []);
+    }, [filters]);
+    const handleChange = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.value });
+    };
     if (loading) return <p>Chargement des factures...</p>;
 
     return (
         <div className="container py-4">
             <h2 className="mt-4 mb-4 fw-bold">📄 Liste des factures</h2>
+
+            {/* Filter section */}
+            <div className="row mb-3">
+                <div className="col-md-3">
+                    <input
+                        type="text"
+                        name="client"
+                        className="form-control"
+                        placeholder="Recherche par client"
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="col-md-2">
+                    <input
+                        type="date"
+                        name="dateEcheance"
+                        className="form-control"
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="col-md-2">
+                    <select name="statut" className="form-control" onChange={handleChange}>
+                        <option value="">Statut</option>
+                        <option value="payee">Payée</option>
+                        <option value="impayee">Impayée</option>
+                        <option value="en_retard">En retard</option>
+                    </select>
+                </div>
+                <div className="col-md-2">
+                    <input
+                        type="number"
+                        name="totalTTC"
+                        className="form-control"
+                        placeholder="Montant "
+                        onChange={handleChange}
+                    />
+                </div>
+            </div>
             <div className="row g-4">
                 {invoices.map((invoice) => (
                     <div key={invoice._id}
@@ -49,7 +97,7 @@ const ListInvoices = () => {
                                 </div>
 
                                 <p className="mb-1 text-muted">
-                                    <strong>Client :</strong> {invoice.clientId?.nom || 'N/A'}
+                                    <strong>Client :</strong> {invoice.clientId?.nom || 'N/A'} {invoice.clientId?.prenom || 'N/A'}
                                 </p>
 
                                 <div className="d-flex justify-content-between small">

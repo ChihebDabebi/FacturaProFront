@@ -25,6 +25,8 @@ const ListInvoices = () => {
         axios.get('http://localhost:3001/invoice/', { params: filters })
             .then((response) => {
                 setInvoices(response.data);
+                console.log(response);
+                
                 setLoading(false);
             })
             .catch((error) => {
@@ -63,9 +65,9 @@ const ListInvoices = () => {
                 <div className="col-md-2">
                     <select name="statut" className="form-control" onChange={handleChange}>
                         <option value="">Statut</option>
-                        <option value="payee">Payée</option>
-                        <option value="impayee">Impayée</option>
-                        <option value="en_retard">En retard</option>
+                        <option value="payée">Payée</option>
+                        <option value="envoyée">Impayée</option>
+                        <option value="en retard">En retard</option>
                     </select>
                 </div>
                 <div className="col-md-2">

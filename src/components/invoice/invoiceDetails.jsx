@@ -89,6 +89,7 @@ const InvoiceDetails = () => {
           {/* Client Info */}
           <h5 className="text-muted mb-3">👤 Informations sur le client</h5>
           <p><strong>Nom:</strong> {invoice.clientId?.nom || 'N/A'}</p>
+          <p><strong>Prénom:</strong> {invoice.clientId?.prenom || 'N/A'}</p>
           <p><strong>Email:</strong> {invoice.clientId?.email || 'N/A'}</p>
           <p><strong>Entreprise:</strong> {invoice.clientId?.entreprise || 'N/A'}</p>
 

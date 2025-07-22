@@ -12,19 +12,19 @@ export default function SignIn1() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { user,login } = useAuth();
+  const { user, login } = useAuth();
 
-    const handleLogin = async () => {
+  const handleLogin = async () => {
     try {
       await login(email, password);
       navigate('/');
-      
+
     } catch (err) {
       console.error(err);
       alert('Login failed');
     }
   };
- 
+
 
   return (
     <div className="auth-wrapper">
@@ -33,7 +33,10 @@ export default function SignIn1() {
           <Row className="align-items-center text-center">
             <Col>
               <Card.Body className="card-body">
-                <img src={logoDark} alt="" className="img-fluid mb-4" />
+                <h1 className="mb-4 fw-bold text-primary" style={{ fontSize: '2rem', letterSpacing: '1px' }}>
+                  FacturaPro
+                </h1>
+
                 <h4 className="mb-3 f-w-400">Signin</h4>
                 <InputGroup className="mb-3">
                   <InputGroup.Text>

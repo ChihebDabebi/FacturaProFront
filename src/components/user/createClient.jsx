@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-
+import api from '../../utils/axios';
 export default function CreateClient() {
   const [form, setForm] = useState({
     nom: '',
@@ -28,7 +28,7 @@ export default function CreateClient() {
         role: 'client'
       };
 
-      await axios.post('http://localhost:3001/user/', payload);
+      await api.post('http://localhost:3001/user/', payload);
       setMessage('✅ Client créé avec succès !');
       setForm({
         nom: '',

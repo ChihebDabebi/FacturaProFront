@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../../utils/axios'; 
+import api from '../../utils/axios';
+import { useAuth } from '../../context/AuthContext';
 
 const statusColors = {
   payée: 'success',
@@ -10,6 +11,8 @@ const statusColors = {
 };
 
 const InvoiceDetails = () => {
+  const { getToken } = useAuth();
+  let token = getToken();
   const { id } = useParams();
   const navigate = useNavigate();
   const [invoice, setInvoice] = useState(null);
@@ -24,7 +27,11 @@ const InvoiceDetails = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const res = await api.get(`http://localhost:3001/invoice/${id}`);
+        const res = await api.get(`http://localhost:3001/invoice/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         setInvoice(res.data);
         const totalPaid = res.data.paiements.reduce((sum, p) => sum + p.montant, 0);
         setRest(res.data.totalTTC - totalPaid);
@@ -38,22 +45,31 @@ const InvoiceDetails = () => {
     fetchInvoice();
   }, [id]);
 
-  const handleSend = async ()=>{
-    if(invoice.statut == "brouillon"){
-    await api.put(`http://localhost:3001/invoice/${id}`, { statut: 'envoyée' });
-     alert("Facture envoyée avec succès !");  
+  const handleSend = async () => {
+    if (invoice.statut == "brouillon") {
+      await api.put(`http://localhost:3001/invoice/${id}`, {
+        statut: 'envoyée',
+        
+      },{headers: {
+          Authorization: `Bearer ${token}`
+        }});
+      alert("Facture envoyée avec succès !");
       navigate(`/invoices`);
-    }else{
+    } else {
       alert("Cette facture est déjà envoyée !");
     }
-     
+
   }
 
   const handleDelete = async () => {
     const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette facture ?");
     if (confirmed) {
       try {
-        await axios.delete(`http://localhost:3001/invoice/${id}`);
+        await api.delete(`http://localhost:3001/invoice/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         alert("Facture supprimée avec succès.");
         navigate("/invoices");
       } catch (err) {
@@ -187,7 +203,7 @@ const InvoiceDetails = () => {
             className="btn btn-success me-2"
             onClick={handleSend}
           >
-             Envoyer
+            Envoyer
           </button>
         </div>
 

@@ -40,6 +40,9 @@ export const AuthProvider = ({ children }) => {
     const userRes = await api.get(`/user/${decoded.id}`);
     setUser(userRes.data);
   };
+  const getToken = () => {
+    return localStorage.getItem('token');
+  } 
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -48,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login,getToken, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

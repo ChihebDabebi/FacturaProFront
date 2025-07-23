@@ -3,8 +3,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { set } from 'lodash-es';
+import { useAuth } from '../../context/AuthContext';
+import api from '../../utils/axios';
 
 const AddInvoice = () => {
+  const { getToken } = useAuth();
+  const token = getToken();
   const [clients, setClients] = useState([]);
   const [invoice, setInvoice] = useState({
     clientId: '',
@@ -19,7 +23,9 @@ const AddInvoice = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:3001/user/')
+    console.log(token);
+
+    api.get('http://localhost:3001/user/', { params: { role: "client" } })
       .then(res => setClients(res.data))
       .catch(err => console.error("Erreur chargement clients:", err));
   }, []);
@@ -53,8 +59,15 @@ const AddInvoice = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(token);
+
+
     try {
-      await axios.post('http://localhost:3001/invoice', invoice);
+      await api.post('http://localhost:3001/invoice', invoice, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       alert('Facture ajoutée avec succès !');
       navigate('/invoices');
     } catch (err) {
@@ -78,7 +91,7 @@ const AddInvoice = () => {
             <option value="">-- Sélectionner un client --</option>
             {clients.map(c => (
               <option key={c._id} value={c._id}>
-                {c.nom} - {c.entreprise}
+                {c.nom} {c.prenom} - {c.entreprise}
               </option>
             ))}
           </select>

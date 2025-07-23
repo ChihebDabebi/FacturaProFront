@@ -16,15 +16,15 @@ instance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await instance.get('/auth/refresh', { withCredentials: true }); 
+       const res = await instance.get('/auth/refresh', { withCredentials: true }); 
         const newAccessToken = res.data.accessToken;
         localStorage.setItem('token', newAccessToken);
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         return instance(originalRequest); 
       } catch (err) {
         console.log("Refresh token failed", err);
-        localStorage.removeItem('token');
-        window.location.href = '/FacturaPro/login'; 
+        // localStorage.removeItem('token');
+        // window.location.href = '/FacturaPro/login'; 
       }
     }
 

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/axios';
-
+import { useAuth } from '../../context/AuthContext';
 const statusColor = {
     payée: 'success',
     envoyée: 'primary',
@@ -12,7 +12,10 @@ const statusColor = {
 };
 
 const ListInvoices = () => {
+      const { getToken } = useAuth();
+
     const navigate = useNavigate();
+    const token = getToken();
     const [invoices, setInvoices] = useState([]);
     const [filteredInvoices, setFilteredInvoices] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -20,14 +23,19 @@ const ListInvoices = () => {
         client: '',
         dateEcheance: '',
         statut: '',
-        totalTTC : ''
+        totalTTC: ''
     });
     useEffect(() => {
-        api.get('http://localhost:3001/invoice/', { params: filters })
+        api.get('http://localhost:3001/invoice/', {
+            params: filters,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then((response) => {
                 setInvoices(response.data);
                 console.log(response);
-                
+
                 setLoading(false);
             })
             .catch((error) => {

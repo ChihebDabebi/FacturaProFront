@@ -1,8 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate , useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../utils/axios';
+import { useAuth } from '../../context/AuthContext';
 const statusColor = {
     payée: 'success',
     envoyée: 'primary',
@@ -11,6 +12,8 @@ const statusColor = {
 };
 
 const ListInvoicesByClient = () => {
+    const {getToken} = useAuth();
+    let token = getToken();
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -23,7 +26,12 @@ const ListInvoicesByClient = () => {
         totalTTC: ''
     });
     useEffect(() => {
-        api.get(`/invoice/client/${id}`, { params: filters })
+        api.get(`/invoice/client/${id}`, {
+            params: filters,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then((response) => {
                 setInvoices(response.data);
                 console.log(response);
@@ -46,7 +54,7 @@ const ListInvoicesByClient = () => {
 
             {/* Filter section */}
             <div className="row mb-3 ">
-                
+
                 <div className="col-md-2">
                     <input
                         type="date"

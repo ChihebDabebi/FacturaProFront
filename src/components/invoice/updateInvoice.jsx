@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import api from '../../utils/axios';
 const UpdateInvoice = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const UpdateInvoice = () => {
     // Fetch current invoice
     const fetchInvoice = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/invoice/${id}`);
+        const res = await api.get(`http://localhost:3001/invoice/${id}`);
         setInvoice(res.data);
       } catch (err) {
         console.error("Erreur de récupération de la facture :", err);
@@ -22,7 +22,7 @@ const UpdateInvoice = () => {
     // Fetch clients for select list
     const fetchClients = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/client`);
+        const res = await api.get(`http://localhost:3001/client`);
         setClients(res.data);
       } catch (err) {
         console.error("Erreur de récupération des clients :", err);
@@ -46,7 +46,11 @@ const UpdateInvoice = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3001/invoice/${id}`, invoice);
+      await api.put(`http://localhost:3001/invoice/${id}`, invoice, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       alert("✅ Facture mise à jour !");
       navigate(`/invoices/${id}`);
     } catch (err) {

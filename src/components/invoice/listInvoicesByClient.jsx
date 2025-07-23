@@ -45,16 +45,8 @@ const ListInvoicesByClient = () => {
             <h2 className="mt-4 mb-4 fw-bold">📄 Liste des factures</h2>
 
             {/* Filter section */}
-            <div className="row mb-3">
-                <div className="col-md-3">
-                    <input
-                        type="text"
-                        name="client"
-                        className="form-control"
-                        placeholder="Recherche par client"
-                        onChange={handleChange}
-                    />
-                </div>
+            <div className="row mb-3 ">
+                
                 <div className="col-md-2">
                     <input
                         type="date"

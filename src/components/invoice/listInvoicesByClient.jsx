@@ -1,9 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , useParams } from 'react-router-dom';
 import api from '../../utils/axios';
-
 const statusColor = {
     payée: 'success',
     envoyée: 'primary',
@@ -11,23 +10,24 @@ const statusColor = {
     brouillon: 'secondary'
 };
 
-const ListInvoices = () => {
+const ListInvoicesByClient = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
+
     const [invoices, setInvoices] = useState([]);
     const [filteredInvoices, setFilteredInvoices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState({
-        client: '',
         dateEcheance: '',
         statut: '',
-        totalTTC : ''
+        totalTTC: ''
     });
     useEffect(() => {
-        api.get('http://localhost:3001/invoice/', { params: filters })
+        api.get(`/invoice/client/${id}`, { params: filters })
             .then((response) => {
                 setInvoices(response.data);
                 console.log(response);
-                
+
                 setLoading(false);
             })
             .catch((error) => {
@@ -122,4 +122,4 @@ const ListInvoices = () => {
     );
 };
 
-export default ListInvoices;
+export default ListInvoicesByClient;

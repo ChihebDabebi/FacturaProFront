@@ -5,6 +5,8 @@ import GuestRoute from '../routes/GuestRoute';
 import AdminLayout from 'layouts/AdminLayout';
 import GuestLayout from 'layouts/GuestLayout';
 import CreateClient from '../components/user/createClient';
+import ListClients from '../components/user/listClients';
+import ListInvoicesByClient from '../components/invoice/listInvoicesByClient';
 
 // Lazy-loaded components
 const DashboardSales = lazy(() => import('../views/dashboard/DashSales/index'));
@@ -106,6 +108,14 @@ const router = createBrowserRouter([
             )
           },
           {
+            path: 'users/',
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                < ListClients/>
+              </Suspense>
+            )
+          },
+          {
             path: 'invoices/add',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
@@ -126,6 +136,14 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<div>Loading...</div>}>
                 <InvoiceDetails />
+              </Suspense>
+            )
+          },
+          {
+            path: 'invoices/client/:id',
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <ListInvoicesByClient />
               </Suspense>
             )
           },

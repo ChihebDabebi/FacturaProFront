@@ -135,6 +135,29 @@ const menuItems = {
           ]
         },
         {
+          id: 'clients',
+          title: 'clients',
+          type: 'collapse',
+          icon: 'material-icons-two-tone',
+          iconname: 'request_quote',
+          children: [
+            {
+              id: 'list-clients',
+              title: 'List Clients',
+              type: 'item',
+              url: '/users',
+            },
+            {
+              id: 'add-client',
+              title: 'Add Client',
+              type: 'item',
+              url: '/user/add',
+            },
+            
+            
+          ]
+        },
+        {
           id: 'disabled-menu',
           title: 'Disabled Menu',
           type: 'item',

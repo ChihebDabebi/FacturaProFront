@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../utils/axios'; 
 
 const statusColors = {
   payée: 'success',
@@ -24,7 +24,7 @@ const InvoiceDetails = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/invoice/${id}`);
+        const res = await api.get(`http://localhost:3001/invoice/${id}`);
         setInvoice(res.data);
         const totalPaid = res.data.paiements.reduce((sum, p) => sum + p.montant, 0);
         setRest(res.data.totalTTC - totalPaid);
@@ -37,6 +37,17 @@ const InvoiceDetails = () => {
 
     fetchInvoice();
   }, [id]);
+
+  const handleSend = async ()=>{
+    if(invoice.statut == "brouillon"){
+    await api.put(`http://localhost:3001/invoice/${id}`, { statut: 'envoyée' });
+     alert("Facture envoyée avec succès !");  
+      navigate(`/invoices`);
+    }else{
+      alert("Cette facture est déjà envoyée !");
+    }
+     
+  }
 
   const handleDelete = async () => {
     const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette facture ?");
@@ -73,12 +84,12 @@ const InvoiceDetails = () => {
             </span>
           </div>
           <div>
-            <button
+            {invoice.statut == "brouillon" ? <button
               className="btn btn-outline-primary me-2"
               onClick={() => navigate(`/invoice/edit/${id}`)}
             >
               ✏️ Modifier
-            </button>
+            </button> : null}
             <button className="btn btn-outline-danger" onClick={handleDelete}>
               🗑️ Supprimer
             </button>
@@ -172,8 +183,16 @@ const InvoiceDetails = () => {
               <span className="fw-bold">Cette facture est entièrement payée ✅</span>
             )}
           </div>
+          <button
+            className="btn btn-success me-2"
+            onClick={handleSend}
+          >
+             Envoyer
+          </button>
         </div>
+
       </div>
+
     </div>
   );
 };

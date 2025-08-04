@@ -13,7 +13,7 @@ import {useAuth} from '../../../../context/AuthContext';
 // -----------------------|| NAV RIGHT ||-----------------------//
 
 export default function NavRight() {
-   const { logout } = useAuth();
+   const { user,logout } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -41,8 +41,8 @@ export default function NavRight() {
           <Dropdown.Toggle as="a" variant="link" className="pc-head-link arrow-none me-0 user-name">
             <img src={avatar2} alt="userimage" className="user-avatar" />
             <span>
-              <span className="user-name">Joseph William</span>
-              <span className="user-desc">Administrator</span>
+              <span className="user-name">{user.nom +" "+ user.prenom}</span>
+              <span className="user-desc">{user.role}</span>
             </span>
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu-end pc-h-dropdown">

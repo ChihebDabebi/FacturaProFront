@@ -44,6 +44,7 @@ const ListInvoices = () => {
             });
     }, [filters]);
     const handleChange = (e) => {
+        
         setFilters({ ...filters, [e.target.name]: e.target.value });
     };
     if (loading) return <p>Chargement des factures...</p>;

@@ -79,7 +79,7 @@ const ListClients = () => {
                                 <td>
                                     <button
                                         className="btn  btn-sm me-2"
-                                        onClick={() => navigate(`/clients/edit/${client._id}`)}
+                                        onClick={() => navigate(`/user/edit/${client._id}`)}
                                     >
                                         ✏️ 
                                     </button>

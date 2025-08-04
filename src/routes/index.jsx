@@ -8,6 +8,7 @@ import CreateClient from '../components/user/createClient';
 import ListClients from '../components/user/listClients';
 import ListInvoicesByClient from '../components/invoice/listInvoicesByClient';
 import UpdateClient from '../components/user/updateClient';
+import ClientStats from '../views/dashboard/DashSales/indexClient';
 
 // Lazy-loaded components
 const DashboardSales = lazy(() => import('../views/dashboard/DashSales/index'));
@@ -41,6 +42,14 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<div>Loading...</div>}>
                 <DashboardSales />
+              </Suspense>
+            )
+          },
+          {
+            path: 'dashboard/client',
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <ClientStats />
               </Suspense>
             )
           },
@@ -104,7 +113,7 @@ const router = createBrowserRouter([
             path: 'user/add',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                < CreateClient/>
+                < CreateClient />
               </Suspense>
             )
           },
@@ -112,7 +121,7 @@ const router = createBrowserRouter([
             path: 'users/',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                < ListClients/>
+                < ListClients />
               </Suspense>
             )
           },

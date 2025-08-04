@@ -82,7 +82,16 @@ const InvoiceDetails = () => {
   };
   const handlePdf = () => {
     const element = document.querySelector('#invoice');
-    html2pdf(element);
+    html2pdf()
+      .set({
+        margin: 0,
+        filename: 'facture.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      })
+      .from(element)
+      .save();
   }
 
   if (loading) return <div className="text-center mt-5">Chargement...</div>;

@@ -12,7 +12,7 @@ const statusColor = {
 };
 
 const ListInvoices = () => {
-      const { getToken } = useAuth();
+    const { getToken } = useAuth();
 
     const navigate = useNavigate();
     const token = getToken();
@@ -42,9 +42,38 @@ const ListInvoices = () => {
                 console.error('Erreur lors de la récupération des factures :', error);
                 setLoading(false);
             });
+
+
+
     }, [filters]);
+    useEffect(() => {
+        const updateOverdueInvoices = async () => {
+            const now = new Date();
+
+            const updates = invoices
+                .filter(inv => new Date(inv.dateEcheance) < now && inv.statut !== 'payée' && inv.statut !== 'en retard')
+                .map(async (invoice) => {
+                    const updatedInvoice = { ...invoice, statut: 'en retard' };
+                    try {
+                        await api.put(`http://localhost:3001/invoice/${invoice._id}`, updatedInvoice, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                    } catch (err) {
+                        console.error(`Erreur lors de la mise à jour de la facture ${invoice._id}:`, err);
+                    }
+                });
+
+            await Promise.all(updates); 
+        };
+
+        if (invoices.length > 0) {
+            updateOverdueInvoices();
+        }
+    }, [invoices, token]);
+
+
     const handleChange = (e) => {
-        
+
         setFilters({ ...filters, [e.target.name]: e.target.value });
     };
     if (loading) return <p>Chargement des factures...</p>;

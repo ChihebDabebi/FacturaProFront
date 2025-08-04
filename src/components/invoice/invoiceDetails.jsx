@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../utils/axios';
 import { useAuth } from '../../context/AuthContext';
 import html2pdf from 'html2pdf.js';
+
 const statusColors = {
   payée: 'success',
   'en retard': 'danger',
@@ -46,10 +47,9 @@ const InvoiceDetails = () => {
   }, [id]);
 
   const handleSend = async () => {
-    if (invoice.statut == "brouillon") {
+    if (invoice.statut === "brouillon") {
       await api.put(`http://localhost:3001/invoice/${id}`, {
         statut: 'envoyée',
-
       }, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -60,8 +60,7 @@ const InvoiceDetails = () => {
     } else {
       alert("Cette facture est déjà envoyée !");
     }
-
-  }
+  };
 
   const handleDelete = async () => {
     const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette facture ?");
@@ -80,6 +79,7 @@ const InvoiceDetails = () => {
       }
     }
   };
+
   const handlePdf = () => {
     const element = document.querySelector('#invoice');
     html2pdf()
@@ -92,7 +92,7 @@ const InvoiceDetails = () => {
       })
       .from(element)
       .save();
-  }
+  };
 
   if (loading) return <div className="text-center mt-5">Chargement...</div>;
   if (!invoice) return <div className="text-center text-danger mt-5">Facture introuvable</div>;
@@ -103,12 +103,14 @@ const InvoiceDetails = () => {
         ← Retour
       </button>
       <div className='d-flex justify-content-end mb-3'>
-        {invoice.statut == "brouillon" ? <button
-          className="btn btn-outline-primary me-2"
-          onClick={() => navigate(`/invoice/edit/${id}`)}
-        >
-          ✏️ Modifier
-        </button> : null}
+        {invoice.statut === "brouillon" && (
+          <button
+            className="btn btn-outline-primary me-2"
+            onClick={() => navigate(`/invoice/edit/${id}`)}
+          >
+            ✏️ Modifier
+          </button>
+        )}
         <button className="btn btn-outline-danger" onClick={handleDelete}>
           🗑️ Supprimer
         </button>
@@ -125,7 +127,6 @@ const InvoiceDetails = () => {
               {invoice.statut}
             </span>
           </div>
-
         </div>
 
         <div className="card-body">
@@ -173,7 +174,6 @@ const InvoiceDetails = () => {
             </table>
           </div>
 
-
           <div className="mt-4 text-end">
             <p><strong>Total HT :</strong> {formatter.format(invoice.totalHT)}</p>
             <p><strong>TVA :</strong> {formatter.format(invoice.tva)}</p>
@@ -205,7 +205,7 @@ const InvoiceDetails = () => {
           )}
 
           <hr />
-          {/* Remaining */}
+
           <h5 className="text-muted mb-3">💰 Reste à payer</h5>
           <div className={`alert ${rest > 0 ? 'alert-warning' : 'alert-success'}`}>
             {rest > 0 ? (
@@ -215,26 +215,31 @@ const InvoiceDetails = () => {
             )}
           </div>
 
+          <hr />
+          <div className="d-flex justify-content-end mt-5">
+            <div style={{ textAlign: 'right' }}>
+              <h5 className="mb-4">✍️ Signature</h5>
+              <div
+                style={{
+                  borderTop: '1px solid #999',
+                  width: '250px',
+                  height: '80px',
+                  paddingTop: '10px',
+                  fontStyle: 'italic'
+                }}
+              >
+                Signature du client
+              </div>
+            </div>
+          </div>
+
         </div>
-
-      </div>
-      <div className="d-flex justify-content-between mb-2">
-        <button
-          className="btn btn-success"
-          onClick={handleSend}
-        >
-          Envoyer
-        </button>
-
-        <button
-          className="btn btn-primary"
-          onClick={handlePdf}
-        >
-          Export PDF
-        </button>
       </div>
 
-
+      <div className="d-flex justify-content-between mb-2 mt-3">
+        <button className="btn btn-success" onClick={handleSend}>Envoyer</button>
+        <button className="btn btn-primary" onClick={handlePdf}>Export PDF</button>
+      </div>
     </div>
   );
 };

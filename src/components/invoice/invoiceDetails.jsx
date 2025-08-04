@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../utils/axios';
 import { useAuth } from '../../context/AuthContext';
-import html2pdf  from 'html2pdf.js';
+import html2pdf from 'html2pdf.js';
 const statusColors = {
   payée: 'success',
   'en retard': 'danger',
@@ -49,10 +49,12 @@ const InvoiceDetails = () => {
     if (invoice.statut == "brouillon") {
       await api.put(`http://localhost:3001/invoice/${id}`, {
         statut: 'envoyée',
-        
-      },{headers: {
+
+      }, {
+        headers: {
           Authorization: `Bearer ${token}`
-        }});
+        }
+      });
       alert("Facture envoyée avec succès !");
       navigate(`/invoices`);
     } else {
@@ -92,16 +94,16 @@ const InvoiceDetails = () => {
         ← Retour
       </button>
       <div className='d-flex justify-content-end mb-3'>
-            {invoice.statut == "brouillon" ? <button
-              className="btn btn-outline-primary me-2"
-              onClick={() => navigate(`/invoice/edit/${id}`)}
-            >
-              ✏️ Modifier
-            </button> : null}
-            <button className="btn btn-outline-danger" onClick={handleDelete}>
-              🗑️ Supprimer
-            </button>
-          </div>
+        {invoice.statut == "brouillon" ? <button
+          className="btn btn-outline-primary me-2"
+          onClick={() => navigate(`/invoice/edit/${id}`)}
+        >
+          ✏️ Modifier
+        </button> : null}
+        <button className="btn btn-outline-danger" onClick={handleDelete}>
+          🗑️ Supprimer
+        </button>
+      </div>
 
       <div className="card shadow border-0" id="invoice">
         <div className="card-header d-flex justify-content-between align-items-center">
@@ -114,7 +116,7 @@ const InvoiceDetails = () => {
               {invoice.statut}
             </span>
           </div>
-          
+
         </div>
 
         <div className="card-body">
@@ -123,15 +125,15 @@ const InvoiceDetails = () => {
           <p><strong>Prénom:</strong> {invoice.clientId?.prenom || 'N/A'}</p>
           <p><strong>Email:</strong> {invoice.clientId?.email || 'N/A'}</p>
           <p><strong>Entreprise:</strong> {invoice.clientId?.entreprise || 'N/A'}</p>
-          
-          <hr/>
-          
+
+          <hr />
+
           <h5 className="text-muted mb-3">🧾 Détails de la facture</h5>
           <p><strong>Date d’émission:</strong> {new Date(invoice.dateEmission).toLocaleDateString()}</p>
           <p><strong>Date d’échéance:</strong> {new Date(invoice.dateEcheance).toLocaleDateString()}</p>
 
           <hr />
-          
+
           <h5 className="text-muted mb-3">📦 Produits</h5>
           <div className="table-responsive">
             <table className="table table-bordered align-middle">
@@ -162,15 +164,15 @@ const InvoiceDetails = () => {
             </table>
           </div>
 
-          
+
           <div className="mt-4 text-end">
             <p><strong>Total HT :</strong> {formatter.format(invoice.totalHT)}</p>
             <p><strong>TVA :</strong> {formatter.format(invoice.tva)}</p>
             <h5><strong>Total TTC :</strong> {formatter.format(invoice.totalTTC)}</h5>
           </div>
 
-          <hr/>
-        
+          <hr />
+
           <h5 className="text-muted mb-3">💳 Paiements</h5>
           {invoice.paiements && invoice.paiements.length > 0 ? (
             <ul className="list-group mb-3">
@@ -203,22 +205,27 @@ const InvoiceDetails = () => {
               <span className="fw-bold">Cette facture est entièrement payée ✅</span>
             )}
           </div>
-          
+
         </div>
 
       </div>
-            <button
-            className="btn btn-success me-2"
-            onClick={handleSend}
-          >
-            Envoyer
-          </button>
-          <button 
-            className="btn btn-success me-2"
-            onClick={handlePdf}
-          >
-            Export PDF
-          </button>
+      <div className="d-flex justify-content-between mb-2">
+        <button
+          className="btn btn-success"
+          onClick={handleSend}
+        >
+          Envoyer
+        </button>
+
+        <button
+          className="btn btn-primary"
+          onClick={handlePdf}
+        >
+          Export PDF
+        </button>
+      </div>
+
+
     </div>
   );
 };

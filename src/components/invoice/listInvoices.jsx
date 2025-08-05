@@ -12,7 +12,7 @@ const statusColor = {
 };
 
 const ListInvoices = () => {
-    const { getToken } = useAuth();
+    const { user, getToken } = useAuth();
 
     const navigate = useNavigate();
     const token = getToken();
@@ -26,22 +26,44 @@ const ListInvoices = () => {
         totalTTC: ''
     });
     useEffect(() => {
-        api.get('http://localhost:3001/invoice/', {
-            params: filters,
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then((response) => {
-                setInvoices(response.data);
-                console.log(response);
-
-                setLoading(false);
+        console.log(user._id,user.role);
+        
+        if (user.role == "admin") {
+            api.get('http://localhost:3001/invoice/', {
+                params: filters,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             })
-            .catch((error) => {
-                console.error('Erreur lors de la récupération des factures :', error);
-                setLoading(false);
-            });
+                .then((response) => {
+                    setInvoices(response.data);
+                    console.log(response);
+
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error('Erreur lors de la récupération des factures :', error);
+                    setLoading(false);
+                });
+
+        } else {
+            api.get(`http://localhost:3001/invoice/client/${user._id}`, {
+                params: filters,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then((response) => {
+                    setInvoices(response.data);
+                    console.log(response);
+
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error('Erreur lors de la récupération des factures :', error);
+                    setLoading(false);
+                });
+        }
 
 
 
@@ -63,7 +85,7 @@ const ListInvoices = () => {
                     }
                 });
 
-            await Promise.all(updates); 
+            await Promise.all(updates);
         };
 
         if (invoices.length > 0) {

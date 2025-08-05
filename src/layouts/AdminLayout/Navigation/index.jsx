@@ -5,15 +5,17 @@ import NavContent from './NavContent';
 import { ConfigContext } from 'contexts/ConfigContext';
 import useWindowSize from 'hooks/useWindowSize';
 import navigation from 'menu-items';
+import navigationClient from 'menu-client-items';
 import navitemcollapse from 'menu-items-collapse';
 import * as actionType from 'store/actions';
-
+import { useAuth } from '../../../context/AuthContext';
 // assets
 import avatar2 from 'assets/images/user/avatar-2.jpg';
 
 // -----------------------|| NAVIGATION ||-----------------------//
 
 export default function Navigation() {
+  const { user } = useAuth();
   const configContext = useContext(ConfigContext);
   const { collapseMenu, collapseLayout } = configContext.state;
   const windowSize = useWindowSize();
@@ -24,6 +26,12 @@ export default function Navigation() {
   };
 
   let navClass = 'dark-sidebar';
+  if (user.role === 'client') {
+    navClass = 'light-sidebar';
+    navigation.items = navigationClient.items;
+  } else {
+    navigation.items = navigation.items;
+  }
 
   let navContent = <NavContent navigation={collapseLayout ? navitemcollapse.items : navigation.items} />;
   navClass = [...navClass, 'pc-sidebar'];

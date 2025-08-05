@@ -3,154 +3,83 @@ const menuItems = {
   items: [
     {
       id: 'navigation',
-      title: 'Navigation',
+      title: 'Dashboard',
       type: 'group',
-
+      icon: 'icon-navigation',
       children: [
         {
           id: 'dashboard',
           title: 'Dashboard',
-          type: 'collapse',
-          children: [
-            {
-              id: 'sales',
-              title: 'Sales',
-              type: 'item',
-              url: '/dashboard/sales'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      type: 'group',
-      id: 'components-group',
-      children: [
-        {
-          id: 'typography',
-          title: 'Typography',
-          type: 'item',
-          url: '/typography'
-        },
-        {
-          id: 'color',
-          title: 'Color',
-          type: 'item',
-          url: '/color'
-        },
-        {
-          id: 'icons',
-          title: 'Icons',
-          type: 'collapse',
-          children: [
-            {
-              id: 'feather',
-              title: 'Feather',
-              type: 'item',
-              url: '/icons/Feather'
-            },
-            {
-              id: 'font-awesome-5',
-              title: 'Font Awesome',
-              type: 'item',
-              url: '/icons/font-awesome-5'
-            },
-            {
-              id: 'material',
-              title: 'Material',
-              type: 'item',
-              url: '/icons/material'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'pages',
-      title: 'Pages',
-      subtitle: '15+ Redymade Pages',
-      type: 'group',
-      icon: 'icon-pages',
-      children: [
-        {
-          id: 'login',
-          title: 'Login',
           type: 'item',
           icon: 'material-icons-two-tone',
-          iconname: 'verified_user',
-          url: '/login'
-        },
-        {
-          id: 'register',
-          title: 'Register',
-          type: 'item',
-          icon: 'material-icons-two-tone',
-          iconname: 'person_add_alt_1',
-          url: '/register'
+          iconname: 'home',
+          url: '/dashboard'
+
         }
       ]
     },
     {
       id: 'support',
-      title: 'OTHER',
-      subtitle: 'Extra More Things',
+      title: 'Factures',
       type: 'group',
       icon: 'icon-support',
       children: [
+
         {
           id: 'invoices',
-          title: 'Invoices',
+          title: 'factures',
           type: 'collapse',
           icon: 'material-icons-two-tone',
           iconname: 'request_quote',
           children: [
             {
               id: 'list-invoices',
-              title: 'List Invoices',
+              title: 'Liste Factures',
               type: 'item',
               url: '/invoices',
             },
             {
               id: 'add-invoice',
-              title: 'Ajouter une facture',
+              title: 'Ajouter Facture',
               type: 'item',
               url: '/invoices/add',
-            }
+            },
+
+
           ]
         },
+      ]
+    },
+     {
+      id: 'support',
+      title: 'Clients',
+      type: 'group',
+      icon: 'icon-support',
+      children: [
+
         {
           id: 'clients',
           title: 'clients',
           type: 'collapse',
           icon: 'material-icons-two-tone',
-           iconname: 'group',
+          iconname: 'group',
           children: [
             {
               id: 'list-clients',
-              title: 'List Clients',
+              title: 'Liste Clients',
               type: 'item',
               url: '/users',
             },
             {
               id: 'add-client',
-              title: 'Add Client',
+              title: 'Ajouter Clients',
               type: 'item',
               url: '/user/add',
             },
-            
-            
+
+
           ]
         },
-        {
-          id: 'disabled-menu',
-          title: 'Disabled Menu',
-          type: 'item',
-          url: '#',
-          classes: 'nav-item disabled',
-          icon: 'material-icons-two-tone',
-          iconname: 'power_off'
-        }
-       
       ]
     }
   ]

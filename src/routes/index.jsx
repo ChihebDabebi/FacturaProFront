@@ -35,10 +35,10 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Navigate to="/dashboard/sales" replace />
+            element: <Navigate to="/dashboard/" replace />
           },
           {
-            path: 'dashboard/sales',
+            path: 'dashboard',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
                 <DashboardSales />

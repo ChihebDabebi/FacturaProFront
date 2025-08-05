@@ -61,7 +61,7 @@ export default function NavContent({ navigation, activeNav }) {
   const mHeader = (
     <div className="m-header">
       <Link 
-  to="/dashboard/sales" 
+  to="/dashboard" 
   className="b-brand" 
   style={{
     fontFamily: "'Inter', sans-serif", // or 'Poppins'

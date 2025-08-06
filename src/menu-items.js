@@ -51,7 +51,7 @@ const menuItems = {
       ]
     },
      {
-      id: 'support',
+      id: 'suport',
       title: 'Clients',
       type: 'group',
       icon: 'icon-support',

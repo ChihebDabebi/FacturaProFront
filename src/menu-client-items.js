@@ -19,7 +19,7 @@ const menuItemsClient = {
       ]
     },
     {
-      id: 'support',
+      id: 'suport',
       title: 'Factures',
       type: 'group',
       icon: 'icon-support',

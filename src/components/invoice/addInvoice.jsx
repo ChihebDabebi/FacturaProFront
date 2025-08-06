@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { set } from 'lodash-es';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/axios';
 
@@ -23,8 +22,6 @@ const AddInvoice = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(token);
-
     api.get('http://localhost:3001/user/', { params: { role: "client" } })
       .then(res => setClients(res.data))
       .catch(err => console.error("Erreur chargement clients:", err));
@@ -57,10 +54,31 @@ const AddInvoice = () => {
     setInvoice({ ...invoice, produits: newProduits });
   };
 
+  const validateInvoice = () => {
+    const errors = [];
+
+    if (!invoice.clientId) errors.push("Le client est requis.");
+    if (!invoice.dateEmission) errors.push("La date d’émission est requise.");
+    if (!invoice.dateEcheance) errors.push("La date d’échéance est requise.");
+
+    invoice.produits.forEach((p, index) => {
+      if (!p.description) errors.push(`Produit ${index + 1}: Description requise.`);
+      if (!p.quantite || p.quantite < 1) errors.push(`Produit ${index + 1}: Quantité invalide.`);
+      if (p.prixUnitaire < 0 || p.prixUnitaire === '') errors.push(`Produit ${index + 1}: Prix unitaire invalide.`);
+      if (p.tva < 0 || p.tva === '') errors.push(`Produit ${index + 1}: TVA invalide.`);
+    });
+
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(token);
 
+    const errors = validateInvoice();
+    if (errors.length > 0) {
+      alert("Erreurs dans le formulaire:\n\n" + errors.join("\n"));
+      return;
+    }
 
     try {
       await api.post('http://localhost:3001/invoice', invoice, {
@@ -140,6 +158,7 @@ const AddInvoice = () => {
                 className="form-control"
                 min={1}
                 value={prod.quantite}
+                required
                 onChange={e => handleProduitChange(index, 'quantite', e.target.value)}
               />
             </div>
@@ -150,6 +169,7 @@ const AddInvoice = () => {
                 className="form-control"
                 min={0}
                 value={prod.prixUnitaire}
+                required
                 onChange={e => handleProduitChange(index, 'prixUnitaire', e.target.value)}
               />
             </div>
@@ -160,6 +180,7 @@ const AddInvoice = () => {
                 className="form-control"
                 min={0}
                 value={prod.tva}
+                required
                 onChange={e => handleProduitChange(index, 'tva', e.target.value)}
               />
             </div>
@@ -176,7 +197,6 @@ const AddInvoice = () => {
             </div>
           </div>
         ))}
-
 
         <div className="mb-3">
           <button type="button" className="btn btn-outline-primary" onClick={addProduit}>

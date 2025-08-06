@@ -10,7 +10,7 @@ function AppContent() {
   const { loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>; // Or replace with a spinner component
+    return <div>Loading...</div>; 
   }
 
   return <RouterProvider router={router} />;

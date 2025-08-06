@@ -9,6 +9,7 @@ import ListClients from '../components/user/listClients';
 import ListInvoicesByClient from '../components/invoice/listInvoicesByClient';
 import UpdateClient from '../components/user/updateClient';
 import ClientStats from '../views/dashboard/DashSales/indexClient';
+import Unauthorized from '../components/unauthorized';
 
 // Lazy-loaded components
 const DashboardSales = lazy(() => import('../views/dashboard/DashSales/index'));
@@ -28,7 +29,7 @@ const InvoiceDetails = lazy(() => import('../components/invoice/invoiceDetails')
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <ProtectedRoute />,
+    element: <ProtectedRoute allowedRoles={['admin','client']}  />,
     children: [
       {
         element: <AdminLayout />,
@@ -45,62 +46,65 @@ const router = createBrowserRouter([
               </Suspense>
             )
           },
+         
           {
-            path: 'dashboard/client',
+            path: 'invoices',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                <ClientStats />
+                <ListInvoices />
               </Suspense>
             )
           },
+          
+          
+          
+          
           {
-            path: 'typography',
+            path: 'invoices/:id',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                <Typography />
+                <InvoiceDetails />
               </Suspense>
             )
           },
+          
           {
-            path: 'color',
+            path: 'unauthorized',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                <Color />
+                <Unauthorized />
               </Suspense>
             )
           },
+          
           {
-            path: 'icons/Feather',
+            path: '*',
+            element: <h1>Not Found</h1>
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/',
+    element: <ProtectedRoute allowedRoles={['admin']}  />,
+    children: [
+      {
+        element: <AdminLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="/dashboard/" replace />
+          },
+          {
+            path: 'dashboard',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                <FeatherIcon />
+                <DashboardSales />
               </Suspense>
             )
           },
-          {
-            path: 'icons/font-awesome-5',
-            element: (
-              <Suspense fallback={<div>Loading...</div>}>
-                <FontAwesome />
-              </Suspense>
-            )
-          },
-          {
-            path: 'icons/material',
-            element: (
-              <Suspense fallback={<div>Loading...</div>}>
-                <MaterialIcon />
-              </Suspense>
-            )
-          },
-          {
-            path: 'sample-page',
-            element: (
-              <Suspense fallback={<div>Loading...</div>}>
-                <Sample />
-              </Suspense>
-            )
-          },
+         
           {
             path: 'invoices',
             element: (
@@ -158,6 +162,14 @@ const router = createBrowserRouter([
             )
           },
           {
+            path: 'unauthorized',
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <Unauthorized />
+              </Suspense>
+            )
+          },
+          {
             path: 'user/edit/:id',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
@@ -195,7 +207,8 @@ const router = createBrowserRouter([
                 <AuthRegister />
               </Suspense>
             )
-          }
+          },
+          
         ]
       }
     ]

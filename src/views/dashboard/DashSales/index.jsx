@@ -30,9 +30,9 @@ const Dashboard = () => {
       try {
         if (user?.role === 'admin') {
           const [clientsRes, invoicesRes, monthlyRes] = await Promise.all([
-            api.get('http://localhost:3001/stats/clients'),
-            api.get('http://localhost:3001/stats/invoices'),
-            api.get('http://localhost:3001/stats/invoices/monthly')
+            api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/stats/clients`),
+            api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/stats/invoices`),
+            api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/stats/invoices/monthly`)
           ]);
 
           setAdminStats({
@@ -44,7 +44,7 @@ const Dashboard = () => {
             monthlyData: monthlyRes.data.data
           });
         } else {
-          const res = await api.get(`http://localhost:3001/stats/${user._id}`, {
+          const res = await api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/stats/${user._id}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           setClientStats(res.data);

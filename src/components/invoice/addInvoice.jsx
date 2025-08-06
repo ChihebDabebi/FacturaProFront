@@ -22,11 +22,11 @@ const AddInvoice = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get('http://localhost:3001/user/', { params: { role: "client" } })
+    api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/`, { params: { role: "client" } })
       .then(res => setClients(res.data))
       .catch(err => console.error("Erreur chargement clients:", err));
   }, []);
-
+  
   useEffect(() => {
     const totalHT = invoice.produits.reduce((sum, p) => sum + (p.quantite * p.prixUnitaire), 0);
     const tva = invoice.produits.reduce((sum, p) => sum + (p.quantite * p.prixUnitaire * p.tva / 100), 0);
@@ -81,7 +81,7 @@ const AddInvoice = () => {
     }
 
     try {
-      await api.post('http://localhost:3001/invoice', invoice, {
+      await api.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/`, invoice, {
         headers: {
           Authorization: `Bearer ${token}`
         }

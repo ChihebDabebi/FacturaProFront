@@ -19,10 +19,10 @@ const UpdateInvoice = () => {
     const fetchData = async () => {
       try {
         const [invoiceRes, clientsRes] = await Promise.all([
-          api.get(`http://localhost:3001/invoice/${id}`, {
+          api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          api.get('http://localhost:3001/user/', {
+          api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/`, {
             params: { role: 'client' },
             headers: { Authorization: `Bearer ${token}` }
           })
@@ -74,7 +74,7 @@ const UpdateInvoice = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await api.put(`http://localhost:3001/invoice/${id}`, invoice, {
+      await api.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/${id}`, invoice, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('✅ Facture mise à jour avec succès');

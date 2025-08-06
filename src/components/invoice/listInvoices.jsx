@@ -29,7 +29,7 @@ const ListInvoices = () => {
         console.log(user._id,user.role);
         
         if (user.role == "admin") {
-            api.get('http://localhost:3001/invoice/', {
+            api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/`, {
                 params: filters,
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -47,7 +47,7 @@ const ListInvoices = () => {
                 });
 
         } else {
-            api.get(`http://localhost:3001/invoice/client/${user._id}`, {
+            api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/client/${user._id}`, {
                 params: filters,
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -77,7 +77,7 @@ const ListInvoices = () => {
                 .map(async (invoice) => {
                     const updatedInvoice = { ...invoice, statut: 'en retard' };
                     try {
-                        await api.put(`http://localhost:3001/invoice/${invoice._id}`, updatedInvoice, {
+                        await api.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/${invoice._id}`, updatedInvoice, {
                             headers: { Authorization: `Bearer ${token}` }
                         });
                     } catch (err) {

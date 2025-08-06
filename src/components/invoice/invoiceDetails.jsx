@@ -28,7 +28,7 @@ const InvoiceDetails = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const res = await api.get(`http://localhost:3001/invoice/${id}`, {
+        const res = await api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -48,7 +48,7 @@ const InvoiceDetails = () => {
 
   const handleSend = async () => {
     if (invoice.statut === "brouillon") {
-      await api.put(`http://localhost:3001/invoice/${id}`, {
+      await api.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/${id}`, {
         statut: 'envoyée',
       }, {
         headers: {
@@ -66,7 +66,7 @@ const InvoiceDetails = () => {
     const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette facture ?");
     if (confirmed) {
       try {
-        await api.delete(`http://localhost:3001/invoice/${id}`, {
+        await api.delete(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

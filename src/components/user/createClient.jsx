@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 import api from '../../utils/axios';
+import { useAuth } from '../../context/AuthContext';
 export default function CreateClient() {
+  const {getToken} = useAuth();
+  const token = getToken();
   const [form, setForm] = useState({
     nom: '',
     prenom: '',
@@ -28,7 +31,11 @@ export default function CreateClient() {
         role: 'client'
       };
 
-      await api.post('http://localhost:3001/user/', payload);
+      await api.post(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setMessage('✅ Client créé avec succès !');
       setForm({
         nom: '',

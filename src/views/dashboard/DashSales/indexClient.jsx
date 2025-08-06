@@ -18,7 +18,7 @@ const ClientStats = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await api.get(`http://localhost:3001/stats/${user._id}`, {
+        const res = await api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/stats/${user._id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setStats(res.data);

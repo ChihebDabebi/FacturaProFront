@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../utils/axios';
+import { useAuth } from '../../context/AuthContext';
 
 export default function UpdateClient() {
+  const { getToken } = useAuth();
+  const token = getToken();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -21,7 +24,11 @@ export default function UpdateClient() {
   useEffect(() => {
     const fetchClient = async () => {
       try {
-        const res = await api.get(`http://localhost:3001/user/${id}`);
+        const res = await api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         setForm(res.data);
       } catch (err) {
         console.error(err);
@@ -40,9 +47,13 @@ export default function UpdateClient() {
     e.preventDefault();
 
     try {
-      await api.put(`http://localhost:3001/user/${id}`, form);
+      await api.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/${id}`, form, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setMessage('✅ Client mis à jour avec succès !');
-      setTimeout(() => navigate('/users'), 1500); 
+      setTimeout(() => navigate('/users'), 1500);
     } catch (err) {
       console.error(err);
       setMessage('❌ Erreur lors de la mise à jour du client.');

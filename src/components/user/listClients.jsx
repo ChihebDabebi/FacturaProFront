@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../utils/axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const ListClients = () => {
+    const { getToken } = useAuth();
+    const token = getToken();
     const [clients, setClients] = useState([]);
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
@@ -10,7 +13,11 @@ const ListClients = () => {
     useEffect(() => {
         const fetchClients = async () => {
             try {
-                const res = await api.get('/user?role=client');
+                const res = await api.get('/user?role=client', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 setClients(res.data);
             } catch (error) {
                 console.error('Erreur lors du chargement des clients:', error);
@@ -23,7 +30,11 @@ const ListClients = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Voulez-vous vraiment supprimer ce client ?')) {
             try {
-                await api.delete(`/user/${id}`);
+                await api.delete(`/user/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 setClients((prev) => prev.filter((client) => client._id !== id));
             } catch (error) {
                 console.error('Erreur lors de la suppression:', error);
@@ -81,13 +92,13 @@ const ListClients = () => {
                                         className="btn  btn-sm me-2"
                                         onClick={() => navigate(`/user/edit/${client._id}`)}
                                     >
-                                        ✏️ 
+                                        ✏️
                                     </button>
                                     <button
                                         className="btn  btn-sm"
                                         onClick={() => handleDelete(client._id)}
                                     >
-                                        🗑️ 
+                                        🗑️
                                     </button>
                                 </td>
                             </tr>

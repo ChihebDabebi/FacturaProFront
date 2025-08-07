@@ -22,11 +22,17 @@ const AddInvoice = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/`, { params: { role: "client" } })
+    console.log(token);
+
+    api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/user/`, {
+      params: { role: "client" },
+      headers: { Authorization: `Bearer ${token}` }
+    })
+
       .then(res => setClients(res.data))
       .catch(err => console.error("Erreur chargement clients:", err));
   }, []);
-  
+
   useEffect(() => {
     const totalHT = invoice.produits.reduce((sum, p) => sum + (p.quantite * p.prixUnitaire), 0);
     const tva = invoice.produits.reduce((sum, p) => sum + (p.quantite * p.prixUnitaire * p.tva / 100), 0);

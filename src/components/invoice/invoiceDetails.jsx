@@ -237,7 +237,8 @@ const InvoiceDetails = () => {
       </div>
 
       <div className="d-flex justify-content-between mb-2 mt-3">
-        <button className="btn btn-success" onClick={handleSend}>Envoyer</button>
+        {invoice.statut !== "envoyée"?<button className="btn btn-success" onClick={handleSend}>Envoyer</button>
+        : <button className="btn btn-secondary" disabled>Déjà envoyée</button>}
         <button className="btn btn-primary" onClick={handlePdf}>Export PDF</button>
       </div>
     </div>

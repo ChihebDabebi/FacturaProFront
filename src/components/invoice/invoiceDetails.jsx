@@ -289,7 +289,7 @@ const InvoiceDetails = () => {
           : <button className="btn btn-secondary" disabled>Déjà envoyée</button>}
         <button className="btn btn-primary" onClick={handlePdf}>Export PDF</button>
       </div>
-      <div style={{ padding: '2rem' }}>
+      {user.role == "client"?<div style={{ padding: '2rem' }}>
         <Button
           variant="contained"
           onClick={() => setOpen(true)}
@@ -310,7 +310,7 @@ const InvoiceDetails = () => {
           onClose={() => setOpen(false)}
           onSave={handleSave}
         />
-      </div>
+      </div>:null}
     </div>
   );
 };

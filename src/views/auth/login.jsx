@@ -60,22 +60,9 @@ export default function SignIn1() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </InputGroup>
-                <Form.Group>
-                  <Form.Check type="checkbox" className="text-left mb-4 mt-2" label="Save Credentials." defaultChecked />
-                </Form.Group>
+                
                 <Button className="btn btn-block btn-primary mb-4" onClick={handleLogin}>Signin</Button>
-                <p className="mb-2 text-muted">
-                  Forgot password?{' '}
-                  <NavLink to="#" className="f-w-400">
-                    Reset
-                  </NavLink>
-                </p>
-                <p className="mb-0 text-muted">
-                  Don’t have an account?{' '}
-                  <NavLink to="/register" className="f-w-400">
-                    Signup
-                  </NavLink>
-                </p>
+                
               </Card.Body>
             </Col>
           </Row>

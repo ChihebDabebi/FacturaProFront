@@ -7,13 +7,13 @@ import { ListGroup, Dropdown, Form } from 'react-bootstrap';
 import FeatherIcon from 'feather-icons-react';
 
 // assets
-import avatar2 from 'assets/images/user/avatar-2.jpg';
-import {useAuth} from '../../../../context/AuthContext';
+import avatar2 from 'assets/images/user/User.png';
+import { useAuth } from '../../../../context/AuthContext';
 
 // -----------------------|| NAV RIGHT ||-----------------------//
 
 export default function NavRight() {
-   const { user,logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -41,22 +41,18 @@ export default function NavRight() {
           <Dropdown.Toggle as="a" variant="link" className="pc-head-link arrow-none me-0 user-name">
             <img src={avatar2} alt="userimage" className="user-avatar" />
             <span>
-              <span className="user-name">{user.nom +" "+ user.prenom}</span>
-              <span className="user-desc">{user.role}</span>
+              <span className="user-name">{user.nom + " " + user.prenom}</span>
             </span>
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu-end pc-h-dropdown">
             <Dropdown.Header className="pro-head">
               <h5 className="text-overflow m-0">
-                <span className="badge bg-light-success">Pro</span>
+                <span className={`badge ${user.role === 'admin' ? 'bg-light-success' : 'bg-light-primary'}`}>
+                  {user.role}
+                </span>
               </h5>
             </Dropdown.Header>
-            <Link to="/users/user-profile" className="dropdown-item">
-              <i className="feather icon-user" /> Profile
-            </Link>
-            <Link to="/auth/signin-2" className="dropdown-item">
-              <i className="feather icon-lock" /> Lock Screen
-            </Link>
+            
             <Link to="#" className="dropdown-item" onClick={handleLogout}>
               <i className="material-icons-two-tone">chrome_reader_mode</i> Logout
             </Link>

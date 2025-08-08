@@ -172,6 +172,7 @@ const AddInvoice = () => {
               <label className="form-label">Prix unitaire (TND)</label>
               <input
                 type="number"
+                step="any"
                 className="form-control"
                 min={0}
                 value={prod.prixUnitaire}

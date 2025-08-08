@@ -24,9 +24,7 @@ export default function NavBar() {
   let navBar = (
     <>
       <div className="header-wrapper">
-        <div className={mobDrpClass.join(' ')}>
-          <NavLeft />
-        </div>
+        
         <div className="ms-auto">
           <NavRight />
         </div>

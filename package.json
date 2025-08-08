@@ -4,6 +4,10 @@
   "private": true,
   "homepage": "https://your-username.github.io/DashboardKit",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.1",
+    "@mui/material": "^7.3.1",
     "@tanem/react-nprogress": "^5.0.53",
     "@vitejs/plugin-react": "^4.3.4",
     "apexcharts": "^4.3.0",
@@ -21,6 +25,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.1",
+    "react-signature-canvas": "^1.0.3",
     "simplebar-react": "^3.2.6",
     "styled-components": "^6.1.13",
     "vite": "^5.4.1",

@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../utils/axios';
 import { useAuth } from '../../context/AuthContext';
 import html2pdf from 'html2pdf.js';
-
+import SignaturePad from '../signaturePad';
+import Button from '@mui/material/Button';
 const statusColors = {
   payée: 'success',
   'en retard': 'danger',
@@ -12,7 +13,10 @@ const statusColors = {
 };
 
 const InvoiceDetails = () => {
-  const { getToken } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [signature, setSignature] = useState(null);
+
+  const { user, getToken } = useAuth();
   let token = getToken();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -61,6 +65,40 @@ const InvoiceDetails = () => {
       alert("Cette facture est déjà envoyée !");
     }
   };
+  const handleSave = async (dataURL) => {
+    setSignature(dataURL);
+    setOpen(false);
+
+    try {
+      const signedAt = new Date().toISOString();
+      const signedBy = user || "unknown"; // You can use user info here
+
+      await api.put(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/sign/${id}`, {
+        signature: dataURL,
+        signedBy,
+        signedAt,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      alert('Signature enregistrée avec succès.');
+      // Refetch invoice to update UI
+      const res = await api.get(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/invoice/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setInvoice(res.data);
+
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de l'enregistrement de la signature.");
+    }
+  };
+
+
 
   const handleDelete = async () => {
     const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cette facture ?");
@@ -216,30 +254,62 @@ const InvoiceDetails = () => {
           </div>
 
           <hr />
-          <div className="d-flex justify-content-end mt-5">
-            <div style={{ textAlign: 'right' }}>
-              <h5 className="mb-4">✍️ Signature</h5>
-              <div
-                style={{
-                  borderTop: '1px solid #999',
-                  width: '250px',
-                  height: '80px',
-                  paddingTop: '10px',
-                  fontStyle: 'italic'
-                }}
-              >
-                Signature du client
-              </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            <h5 className="mb-4">✍️ Signature</h5>
+
+            <div
+              style={{
+                width: '250px',
+                height: '100px',
+                paddingTop: '10px',
+                fontStyle: 'italic',
+                textAlign: 'center',
+              }}
+            >
+              {invoice.signature ? (
+                <img
+                  src={invoice.signature.image}
+                  alt="Client Signature"
+                  style={{
+                    width: '230px',
+                    height: '60px',
+                    objectFit: 'contain',
+                  }}
+                />
+              ) : (
+                'Signature du client'
+              )}
             </div>
           </div>
-
         </div>
       </div>
 
       <div className="d-flex justify-content-between mb-2 mt-3">
-        {invoice.statut !== "envoyée"?<button className="btn btn-success" onClick={handleSend}>Envoyer</button>
-        : <button className="btn btn-secondary" disabled>Déjà envoyée</button>}
+        {invoice.statut !== "envoyée" ? <button className="btn btn-success" onClick={handleSend}>Envoyer</button>
+          : <button className="btn btn-secondary" disabled>Déjà envoyée</button>}
         <button className="btn btn-primary" onClick={handlePdf}>Export PDF</button>
+      </div>
+      <div style={{ padding: '2rem' }}>
+        <Button
+          variant="contained"
+          onClick={() => setOpen(true)}
+          sx={{ borderRadius: '8px' }}
+        >
+          Open Signature Dialog
+        </Button>
+
+        {signature && (
+          <div style={{ marginTop: '2rem' }}>
+            <h3>Your Signature:</h3>
+            <img src={signature} alt="Signature" style={{ border: '1px solid #eee' }} />
+          </div>
+        )}
+
+        <SignaturePad
+          open={open}
+          onClose={() => setOpen(false)}
+          onSave={handleSave}
+        />
       </div>
     </div>
   );

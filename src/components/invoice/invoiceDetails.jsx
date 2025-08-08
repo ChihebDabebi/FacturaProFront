@@ -298,12 +298,7 @@ const InvoiceDetails = () => {
           Open Signature Dialog
         </Button>
 
-        {signature && (
-          <div style={{ marginTop: '2rem' }}>
-            <h3>Your Signature:</h3>
-            <img src={signature} alt="Signature" style={{ border: '1px solid #eee' }} />
-          </div>
-        )}
+        
 
         <SignaturePad
           open={open}

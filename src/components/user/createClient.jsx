@@ -2,7 +2,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import api from '../../utils/axios';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 export default function CreateClient() {
+  const navigate = useNavigate();
   const {getToken} = useAuth();
   const token = getToken();
   const [form, setForm] = useState({
@@ -48,6 +50,7 @@ export default function CreateClient() {
         role: 'client'
 
       });
+      setTimeout(() => navigate('/users'), 1500);
     } catch (err) {
       console.error(err);
       setMessage('❌ Erreur lors de la création du client.');

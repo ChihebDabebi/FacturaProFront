@@ -106,7 +106,7 @@ const ListInvoices = () => {
 
             {/* Filter section */}
             <div className="row mb-3">
-                <div className="col-md-3">
+                {user.role == "admin"?<div className="col-md-3">
                     <input
                         type="text"
                         name="client"
@@ -114,7 +114,7 @@ const ListInvoices = () => {
                         placeholder="Recherche par client"
                         onChange={handleChange}
                     />
-                </div>
+                </div>:null}
                 <div className="col-md-2">
                     <input
                         type="date"
